@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>AttendMe</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="{% static 'web/vendors/feather/feather.css' %}">
+  <link rel="stylesheet" href="{% static 'web/vendors/ti-icons/css/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'web/vendors/css/vendor.bundle.base.css' %}">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="{% static 'web/vendors/datatables.net-bs4/dataTables.bootstrap4.css' %}">
+  <link rel="stylesheet" href="{% static 'web/vendors/ti-icons/css/themify-icons.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'web/js/select.dataTables.min.css' %}">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css"
+   integrity="sha384-X8QTME3FCg1DLb58++lPvsjbQoCT9bp3MsUU3grbIny/3ZwUJkRNO8NPW6zqzuW9" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'web/css/vertical-layout-light/style.css' %}">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="{% static 'assets/images/minilogo.png' %}" />
+  {% block style %}
+  {% endblock style %}
+</head>
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    {% include 'modal/navbar.html' %}
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+    {% include 'modal/sidebar.html' %}
+      <!-- partial -->
+      {% block content %}
+      {% endblock %}
+
+    {% include 'modal/footer.html' %}
+    
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="{% static 'web/vendors/js/vendor.bundle.base.js' %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="{% static 'web/vendors/chart.js/Chart.min.js' %}"></script>
+  <script src="{% static 'web/vendors/datatables.net/jquery.dataTables.js' %}"></script>
+  <script src="{% static 'web/vendors/datatables.net-bs4/dataTables.bootstrap4.js' %}"></script>
+  <script src="{% static 'web/js/dataTables.select.min.js' %}"></script>
+
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="{% static 'web/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'web/js/template.js' %}"></script>
+  <script src="{% static 'web/js/settings.js' %}"></script>
+  <script src="{% static 'web/js/off-canvas.js' %}"></script>
+  <script src="{% static 'web/js/todolist.js' %}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static 'web/js/dashboard.js' %}"></script>
+  <script src="{% static 'web/js/Chart.roundedBarCharts.js' %}"></script>
+  <!-- End custom js for this page-->
+  {% block script %}
+  {% endblock script %}
+</body>
+
+</html>
+
