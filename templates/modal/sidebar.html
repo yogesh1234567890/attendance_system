@@ -1,0 +1,56 @@
+{% load static %}
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="icon-grid menu-icon"></i>
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>         
+      <li class="nav-item {% if title == 'courses' %}active{% endif %}">
+        <a class="nav-link" href="">
+          <i class="icon-paper menu-icon"></i>
+          <span class="menu-title">Classes</span>
+        </a>
+      </li>
+      <li class="nav-item {% if title == 'Ebooks' %}active{% endif %}">
+        <a class="nav-link" href="">
+          <i class="icon-paper menu-icon"></i>
+          <span class="menu-title">E-books</span>
+        </a>
+      </li>
+      <li class="nav-item {% if title == 'teacher' or title == 'Assign Courses' %}active{% endif %}">
+        <a class="nav-link" data-toggle="collapse" href="#teachers" aria-expanded="false" aria-controls="teachers">
+          <i class="icon-layout menu-icon"></i>
+          <span class="menu-title">Teachers</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="teachers">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="">All teachers</a></li>
+            <li class="nav-item"> <a class="nav-link" href="">Assign Courses</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item {% if title == 'Student' %}active{% endif %}">
+        <a class="nav-link" data-toggle="collapse" href="#students" aria-expanded="false" aria-controls="students">
+          <i class="icon-layout menu-icon"></i>
+          <span class="menu-title">Students</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="students">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="">All Students</a></li>
+            <li class="nav-item"> <a class="nav-link" href="">Assign Courses</a></li>
+
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item {% if title == 'enroll-request' %}active{% endif %}">
+        <a class="nav-link" href="">
+          <i class="icon-paper menu-icon"></i>
+          <span class="menu-title">Student Enroll Request</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
