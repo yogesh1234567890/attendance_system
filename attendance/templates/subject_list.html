@@ -7,12 +7,12 @@
           <div class="card-body">
             <div class="row pb-3">
               <div class="col-10">
-            <p class="card-title">Courses List</p>
+            <p class="card-title">{{title}} List</p>
             </div>
             <div class="col-2">
-            <a href="" class="add-link">
+            <a href="{% url 'attendance:subject_add' %}" class="add-link">
               <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-plus">&nbsp;</i> Add Course
+                <i class="fa fa-plus">&nbsp;</i> Add {{title}}
                </button>
             </a>
             </div>
@@ -25,24 +25,24 @@
                       <tr>
                         <th>S.No</th>
                         <th>Name</th>
+                        <th>Code</th>
                         <th>Description</th>
-                        <th>Tutor</th>
-                        <th>Completion Time</th>
+                        <th>Class</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {% for course in courses %}
+                      {% for subject in subjects %}
                       <tr>
                         <td>{{forloop.counter}}</td>
-                        <td>{{course.name}}</td>
-                        <td>{{course.description}}</td>
-                        <td>{{course.tutor.full_name}}</td>
-                        <td>{{course.time_to_complete}} hours</td>
+                        <td>{{subject.subject_name}}</td>
+                        <td>{{subject.subject_code}}</td>
+                        <td>{{subject.subject_description}}</td>
+                        <td>{{subject.subject_class.name}}</td>
                         <td>
-                          <a href="" class="btn border border-primary"> Edit
+                          <a href="{% url 'attendance:subject_edit' subject.id %}" class="btn border border-primary"> Edit
                           </a>
-                          <a href="" class="btn border border-danger mx-2">Delete
+                          <a href="{% url 'attendance:subject_delete' subject.id %}" class="btn border border-danger mx-2">Delete
                           </a>
                         </td>
                       </tr>
