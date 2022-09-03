@@ -1,0 +1,60 @@
+{% extends 'admin-base.html' %} {% load static %} {% block content %}
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="row pb-3">
+              <div class="col-10">
+            <p class="card-title">{{title}} List</p>
+            </div>
+            <div class="col-2">
+            <a href="{% url 'attendance:class_add' %}" class="add-link">
+              <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="true">
+                <i class="fa fa-plus">&nbsp;</i> Add {{title}}
+               </button>
+            </a>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="table-responsive">
+                  <table id="examplee" class="display expandable-table" style="width:100%">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th>Total Students</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for g in grade %}
+                      <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{g.class_name}}</td>
+                        <td>{{g.class_code}}</td>
+                        <td>{{g.class_description}}</td>
+                        <td>{{g.student_class.count}}</td>
+                        <td>
+                          <a href="{% url 'attendance:class_edit' g.id %}" class="btn border border-primary"> Edit
+                          </a>
+                          <a href="{% url 'attendance:class_delete' g.id %}" class="btn border border-danger mx-2">Delete
+                          </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+{% endblock %}
