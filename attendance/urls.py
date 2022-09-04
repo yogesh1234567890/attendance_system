@@ -18,4 +18,13 @@ urlpatterns = [
      #...............................................
     path('all-student_classes', student_class_list, name='student_class_list'),
     path('student-classes-detail/<int:pk>', student_class_detail, name='student_class_detail'),
+    
+    #...............................................
+    path('all-attendance_classes', attendance_class_list, name='attendance_class_list'),
+    path('attendance-class-subjects/<int:pk>', attendance_class_subjects, name='attendance_class_subjects'),
+    path('attendance-create/<int:pk>', attendance_create, name='attendance_create'),
+    
+    
+    
+    
 ]

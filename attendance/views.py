@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from datetime import date
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, render
 from django.forms import inlineformset_factory
+from django.db import transaction
 from .models import *
 from .forms import *
 
@@ -139,9 +140,6 @@ def student_class_list(request):
     return render(request, "student_class_list.html", {"classes": classes, 'title': 'Students'})
 
 def student_class_detail(request, pk):
-    return render(request, "students.html", {'title': 'Students'})
-
-def student_class_detail(request, pk):
     grade = Classes.objects.get(id=pk)
     ItemFormset = inlineformset_factory(Classes, Students, form=StudentForm, extra=1)
     if request.method == 'POST':
@@ -156,3 +154,53 @@ def student_class_detail(request, pk):
         formset = ItemFormset(instance=grade)
 
     return render(request, 'students.html', {'form': form, 'formset': formset, 'title': 'Students'})
+
+
+
+#....................................................#
+# Taking attendance now
+
+def attendance_class_list(request):
+    classes = Classes.objects.all()
+    return render(request, "main-attendance/attendance_class_list.html", {"classes": classes, 'title': 'Attendance'})
+
+def attendance_class_subjects(request, pk):
+    subjects = Subject.objects.filter(subject_class=pk)
+    return render(request, "main-attendance/attendance_class_subjects.html", {"subjects": subjects, 'title': 'Attendance'})
+
+def attendance_create(request, pk):
+    grade = Subject.objects.get(id=pk).subject_class
+    students = Students.objects.filter(study_class=grade).order_by('roll_no')
+    
+    if request.method == 'POST':
+        current_date = date.today()
+        attendees = request.POST.getlist('student-attendance')
+        attendees = students.filter(id__in=list(map(int, attendees)))
+        absence = students.exclude(id__in=attendees)
+        
+        present_list = []
+        absent_list = []
+        
+        for i in attendees:
+            present = Attendance(
+                student = i,
+                subject = Subject.objects.get(id=pk),
+                attendance = True,
+            )
+            present_list.append(present)
+            
+        for i in absence:
+            present = Attendance(
+                student = i,
+                subject = Subject.objects.get(id=pk),
+                attendance = False,
+            )
+            absent_list.append(present)
+            
+        with transaction.atomic():
+            Attendance.objects.bulk_create(present_list)
+            Attendance.objects.bulk_create(absent_list)
+
+        return redirect('attendance:attendance_class_list')
+        
+    return render(request, "main-attendance/attendance.html", {"students": students, 'title': 'Attendance'})

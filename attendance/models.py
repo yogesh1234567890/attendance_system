@@ -34,13 +34,15 @@ class Students(Base):
     study_class = models.ForeignKey(Classes, related_name="student_class", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.student_name
+        return self.name
     
 class Attendance(Base):
-    student = models.ForeignKey(Students, on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    student = models.ForeignKey(Students, related_name="student_attendance", on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, related_name="student_subject_attendance", on_delete=models.CASCADE)
     attendance = models.BooleanField(default=False)
-    leave_reason = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.student.name
+    
+    class Meta:
+        unique_together = ('student', 'subject', 'attendance', 'created_at')

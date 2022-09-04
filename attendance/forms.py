@@ -2,6 +2,7 @@ from asyncore import read
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Row,Column
 from django.forms import ModelForm
+from django import forms
 from .models import *
 
 class classForm(ModelForm):
@@ -23,3 +24,4 @@ class InlineclassForm(ModelForm):
     class Meta:
         model=Classes
         fields=['class_name']
+        
