@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, render
+from django.forms import inlineformset_factory
 from .models import *
 from .forms import *
 
@@ -136,3 +137,22 @@ class subjectDelete(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 def student_class_list(request):
     classes = Classes.objects.all()
     return render(request, "student_class_list.html", {"classes": classes, 'title': 'Students'})
+
+def student_class_detail(request, pk):
+    return render(request, "students.html", {'title': 'Students'})
+
+def student_class_detail(request, pk):
+    grade = Classes.objects.get(id=pk)
+    ItemFormset = inlineformset_factory(Classes, Students, form=StudentForm, extra=1)
+    if request.method == 'POST':
+        formset = ItemFormset(request.POST, instance=grade)
+        if formset.is_valid():
+            formset.save()
+            from django.contrib import messages
+            messages.success(request, 'Poll successfully updated')
+            return redirect('attendance:student_class_list')
+    else:
+        form = InlineclassForm(instance=grade)
+        formset = ItemFormset(instance=grade)
+
+    return render(request, 'students.html', {'form': form, 'formset': formset, 'title': 'Students'})

@@ -1,0 +1,117 @@
+{% extends 'admin-base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="main-panel">
+<div class="content-wrapper">
+<div class="row">
+   <div class="col-lg-12">
+      <div class="col-12 grid-margin stretch-card">
+         <div class="card">
+            <div class="card-body">
+               <form class="form-inline" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% for field in form %}
+                  <label for="{{field.auto_id}}">{{field.label_tag}}</label>
+                  {% render_field field class="form-control mr-sm-2" placeholder=field.label %}
+                  {% if field.help_text %}
+                  <small>{{ field.help_text|safe }}</small>
+                  {% endif %}
+                  {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive pt-3">
+                    <table class="table table-bordered">
+                    {{ formset.management_form }}
+                    {% for form in formset.forms %}
+                    {% if forloop.first %}
+                    <thead>
+                    <tr>
+                    {% for field in form.visible_fields %}
+                    <th>{{ field.label|capfirst }}</th>
+                    {% endfor %}
+                    </tr>
+                    </thead>
+                    {% endif %}
+                    <tbody>
+                    <tr class="formset_row">
+                    {% for field in form.visible_fields %}
+                    <td>
+                    {% if forloop.first %}
+                    {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                    {% endfor %}
+                    {% endif %}
+                    {{ field.errors.as_ul }}
+                    {{ field | add_class:"form-control" }}
+                    </td>
+                    {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <button id="add-form" style="margin-bottom: 20px;" type="button" class="btn btn-primary">Add Row</button>
+                    </table>
+                    <input type="submit" class="btn btn-primary" style="margin-top: 20px;" value="Save Student">
+                </div>
+            </div>
+        </div>
+   </form>
+   </div>
+   <!--/.col-->
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'assets/js/jquery.formset.js' %}"></script>
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+<script type="text/javascript"> 
+    $("#id_class_name").prop("readonly", true);
+
+        $(function(){
+            $('.formset_row').find(':checkbox').parent().append('<a class="btn btn-danger text-white btn-formset-delete">Delete</a> '); 
+            $('.formset_row').find(':checkbox').attr("class", "form-control btn-formset-delete1 d-none");
+            const i = $('.formset_row').length;
+            $(document).on('click','#add-form',function(){
+                $('#id_student_class-TOTAL_FORMS').val(i+1);
+                $('tbody').append(
+                `
+                    <tr class="formset_row">
+                        <td>
+                        <input type="hidden" name="student_class-${i}-study_class" value="3" id="id_student_class-${i}-study_class">
+                        <input type="hidden" name="student_class-${i}-id" id="id_student_class-${i}-id">
+                        <input type="text" name="student_class-${i}-name" maxlength="50" class="form-control" id="id_student_class-${i}-name">
+                        </td>
+                        <td>
+                        <input type="number" name="student_class-${i}-roll_no" class="form-control" id="id_student_class-${i}-roll_no">
+                        </td>
+                        <td>
+                        <input type="email" name="student_class-${i}-email" maxlength="50" class="form-control" id="id_student_class-${i}-email">
+                        </td>
+                        <td>
+                        <input type="text" name="student_class-${i}-phone" maxlength="15" class="form-control" id="id_student_class-${i}-phone">
+                        </td>
+                        <td>
+                        <input type="checkbox" name="student_class-${i}-DELETE" class="form-control btn-formset-delete1 d-none" id="id_student_class-${i}-DELETE">
+                        <a class="btn btn-danger text-white btn-formset-delete">Delete</a> </td>
+                        </tr>
+                    `);
+                });
+        });
+        $(document).on('click','.btn-formset-delete',function(){
+            $(this).parents('tr').hide();
+            $('#id_student_class-TOTAL_FORMS').val($('.formset_row').length);
+            $(this).parents('tr').find(':checkbox').prop('checked',true);
+            if($('.formset_row').length<2){
+                $('.btn-formset-delete1').remove();
+            }
+         });
+    
+</script>
+{% endblock script %}

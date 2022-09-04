@@ -25,7 +25,7 @@
                     <td class="font-weight-bold">{{class.class_code}}</td>
                     <td class="font-weight-bold">{{class.student_class.count }}</td>
                     <td>
-                      <a href="" class="btn border border-primary"> View Students
+                      <a href="{% url 'attendance:student_class_detail' class.id %}" class="btn border border-primary"> View Students
                       </td>
                   </tr>
                   {% endfor %}
