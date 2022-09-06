@@ -23,8 +23,9 @@
                     <td class="font-weight-bold">{{subject.subject_name}}</td>
                     <td class="font-weight-bold">{{subject.subject_name}}</td>
                     <td>
-                      <a href="{% url 'attendance:attendance_create' subject.id %}" class="btn border border-primary"> Update Attendance
-                      </td>
+                      <a href="{% url 'attendance:attendance_create' subject.id %}" class="btn border border-primary"> Update Attendance </a>
+                      {% comment %} <a href="{% url 'attendance:attendance_display' subject.id %}" class="btn border border-primary"> View Attendance Table </a> {% endcomment %}
+                    </td>
                   </tr>
                   {% endfor %}
                 </tbody>

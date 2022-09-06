@@ -16,7 +16,7 @@ def signup(request):
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect("connection:dashboard")
+            return redirect("attendance:dashboard")
     else:
         form = SignupForm()
     return render(request, "register.html", {"form": form})
@@ -44,4 +44,4 @@ def login_request(request):
 def logout_request(request):
     logout(request)
     messages.info(request, "You have successfully logged out.")
-    return redirect("connection:dashboard")
+    return redirect("accounts:login")

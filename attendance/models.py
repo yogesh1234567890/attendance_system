@@ -3,8 +3,8 @@ from django.db import models
 # Create your models here.
 
 class Base(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     class Meta:
         abstract = True
@@ -45,4 +45,4 @@ class Attendance(Base):
         return self.student.name
     
     class Meta:
-        unique_together = ('student', 'subject', 'attendance', 'created_at')
+        unique_together = ('student', 'subject', 'created_at')

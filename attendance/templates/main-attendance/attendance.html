@@ -19,12 +19,19 @@
                   <form method="post" action="#">
                     {% csrf_token %}
                   {% for student in students %}
-                  <tr>
+                  <tr class="item">
                     <td class="font-weight-bold">{{student.roll_no}}</td>
                     <td class="font-weight-bold">{{student.name}}</td>
+
                     <td>
-                      <input type="checkbox" name="student-attendance" value="{{student.id}}">
+                      <input type="checkbox" id="{{student.id}}" name="student-attendance" value="{{student.id}}">
                     </td>
+                    {% for i in today_attendance %}
+                    {% if student.id == i.student.id %}
+                    <td class="ticker tick-{{student.id}}" style="display:none;">{{i.attendance}}</td>
+                    {% endif %}
+                    
+                    {% endfor %}
                   </tr>
                   {% endfor %}
                   <div>
@@ -44,6 +51,16 @@
 {% endblock %}
 {% block script %}
 <script>
+  $(document).ready(function(){
 
+    $("tr.item").each(function() {
+      if($(this).find("td.ticker").text() == "True"){
+        $(this).find("input").prop("checked", true);
+        $(this).find("input").attr("disabled", true);
+      }
+    });
+
+
+  });
 </script>
 {% endblock script %}

@@ -1,0 +1,44 @@
+{% extends 'admin-base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>
+                  Student
+                </th>
+                {% for date in attendance %}
+                <th id="{{date.created_at}}">
+                  {{date.created_at|date:"d-m-Y"}}
+                </th>
+                {% endfor %}
+                
+              </tr>
+            </thead>
+            <tbody>
+              {% for student in students %}
+              <tr>
+                <td>
+                {{student.name}}
+                </td>
+                <td>
+                  heheh
+                </td>
+                              
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

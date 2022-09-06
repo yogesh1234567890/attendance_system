@@ -1,7 +1,14 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
+from rest_framework import routers
+from attendance.api.views import AttendanceViewSet
+
 
 app_name = "attendance"
+
+router = routers.DefaultRouter()
+router.register("chart-data", AttendanceViewSet)
+
 
 urlpatterns = [
     path("", dashboard, name="dashboard"),
@@ -23,8 +30,10 @@ urlpatterns = [
     path('all-attendance_classes', attendance_class_list, name='attendance_class_list'),
     path('attendance-class-subjects/<int:pk>', attendance_class_subjects, name='attendance_class_subjects'),
     path('attendance-create/<int:pk>', attendance_create, name='attendance_create'),
+    path('attendance-display/<int:pk>', attendance_display_table, name='attendance_display'),
     
     
+    path("", include(router.urls)),
     
     
 ]
