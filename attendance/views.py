@@ -14,6 +14,7 @@ from .models import *
 from .forms import *
 
 # Create your views here.
+@login_required()
 def dashboard(request):
     attendance_total_list = []
     classes = Classes.objects.all().annotate(
@@ -39,6 +40,7 @@ def dashboard(request):
         }
     return render(request, 'index.html',context)
 
+@login_required()
 def classes_list(request):
     grade = Classes.objects.all()
     return render(request, "class_list.html", {"grade": grade, 'title': 'Class'})
@@ -99,7 +101,7 @@ class classDelete(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     
 #...................................................#
 
-
+@login_required()
 def subject_list(request):
     subjects = Subject.objects.all()
     return render(request, "subject_list.html", {"subjects": subjects, 'title': 'Subject'})
@@ -158,11 +160,12 @@ class subjectDelete(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
 #...................................................#
 
-
+@login_required()
 def student_class_list(request):
     classes = Classes.objects.all()
     return render(request, "student_class_list.html", {"classes": classes, 'title': 'Students'})
 
+@login_required()
 def student_class_detail(request, pk):
     grade = Classes.objects.get(id=pk)
     ItemFormset = inlineformset_factory(Classes, Students, form=StudentForm, extra=1)
@@ -183,15 +186,17 @@ def student_class_detail(request, pk):
 
 #....................................................#
 # Taking attendance now
-
+@login_required()
 def attendance_class_list(request):
     classes = Classes.objects.all()
     return render(request, "main-attendance/attendance_class_list.html", {"classes": classes, 'title': 'Attendance'})
 
+@login_required()
 def attendance_class_subjects(request, pk):
     subjects = Subject.objects.filter(subject_class=pk)
     return render(request, "main-attendance/attendance_class_subjects.html", {"subjects": subjects, 'title': 'Attendance'})
 
+@login_required()
 def attendance_create(request, pk):
     grade = Subject.objects.get(id=pk).subject_class
     students = Students.objects.filter(study_class=grade).order_by('roll_no')
@@ -246,6 +251,7 @@ def attendance_create(request, pk):
         
     return render(request, "main-attendance/attendance.html", {"students": students, 'title': 'Attendance', 'today_attendance': today_attendance})
 
+@login_required()
 def attendance_display_table(request, pk):
     sub = Subject.objects.get(id=pk)
     students = Students.objects.filter(study_class=sub.subject_class).order_by('roll_no')
