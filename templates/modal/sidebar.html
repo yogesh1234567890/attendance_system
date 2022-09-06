@@ -1,8 +1,8 @@
 {% load static %}
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link" href="#">
+      <li class="nav-item {% if title == 'Dashboard' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'attendance:dashboard' %}">
           <i class="icon-grid menu-icon"></i>
           <span class="menu-title">Dashboard</span>
         </a>
@@ -24,6 +24,12 @@
         <a class="nav-link" href="{% url 'attendance:student_class_list' %}">
           <i class="icon-paper menu-icon"></i>
           <span class="menu-title">Student List</span>
+        </a>
+      </li>
+      <li class="nav-item {% if title == 'Attendance' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'attendance:attendance_class_list' %}">
+          <i class="icon-paper menu-icon"></i>
+          <span class="menu-title">Attendance</span>
         </a>
       </li>
     </ul>
