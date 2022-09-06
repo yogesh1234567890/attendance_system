@@ -10,10 +10,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+# import dj_database_url
+import os
+from django.test.runner import DiscoverRunner
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# IS_HEROKU = "DYNO" in os.environ
+
+
+# if 'SECRET_KEY' in os.environ:
+#     SECRET_KEY = os.environ["SECRET_KEY"]
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -24,9 +34,16 @@ SECRET_KEY = 'django-insecure-%%n6n+#(pxj1no*#rd1use^ik-5u&z7!opiczc02de6x6d0^mu
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# if not IS_HEROKU:
+#     DEBUG = True
 
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS = ["*"]
+
+# if IS_HEROKU:
+#     ALLOWED_HOSTS = ["*"]
+# else:
+#     ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -50,6 +67,7 @@ LOGIN_URL = 'accounts:login'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,14 +100,25 @@ WSGI_APPLICATION = 'attendance_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         "HOST": "localhost",
+#         "PORT": "5433",
+#         "NAME": "attendance_system",
+#         "USER": "yogesh",
+#         "PASSWORD": "asdf;lkj",
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        "HOST": "localhost",
-        "PORT": "5433",
-        "NAME": "attendance_system",
-        "USER": "yogesh",
-        "PASSWORD": "asdf;lkj",
+        "HOST": "ec2-3-219-19-205.compute-1.amazonaws.com",
+        "PORT": "5432",
+        "NAME": "d79mt0lqs081qn",
+        "USER": "yakrvkuagbuzym",
+        "PASSWORD": "0ce7cdaeee5046869c6d5b817f369493b6456c43b813eba868c9ca66482387bb",
     }
 }
 
@@ -133,6 +162,27 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Enable WhiteNoise's GZip compression of static assets.
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+# Test Runner Config
+class HerokuDiscoverRunner(DiscoverRunner):
+    """Test Runner for Heroku CI, which provides a database for you.
+    This requires you to set the TEST database (done for you by settings().)"""
+
+    def setup_databases(self, **kwargs):
+        self.keepdb = True
+        return super(HerokuDiscoverRunner, self).setup_databases(**kwargs)
+
+
+# Use HerokuDiscoverRunner on Heroku CI
+if "CI" in os.environ:
+    TEST_RUNNER = "gettingstarted.settings.HerokuDiscoverRunner"
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
