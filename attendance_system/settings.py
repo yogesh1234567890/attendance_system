@@ -100,27 +100,27 @@ WSGI_APPLICATION = 'attendance_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        "HOST": "localhost",
-        "PORT": "5433",
-        "NAME": "attendance_system",
-        "USER": "yogesh",
-        "PASSWORD": "asdf;lkj",
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         "HOST": "ec2-3-219-19-205.compute-1.amazonaws.com",
-#         "PORT": "5432",
-#         "NAME": "d79mt0lqs081qn",
-#         "USER": "yakrvkuagbuzym",
-#         "PASSWORD": "0ce7cdaeee5046869c6d5b817f369493b6456c43b813eba868c9ca66482387bb",
+#         "HOST": "localhost",
+#         "PORT": "5433",
+#         "NAME": "attendance_system",
+#         "USER": "yogesh",
+#         "PASSWORD": "asdf;lkj",
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        "HOST": "ec2-3-219-19-205.compute-1.amazonaws.com",
+        "PORT": "5432",
+        "NAME": "d79mt0lqs081qn",
+        "USER": "yakrvkuagbuzym",
+        "PASSWORD": "0ce7cdaeee5046869c6d5b817f369493b6456c43b813eba868c9ca66482387bb",
+    }
+}
 
 FIXTURE_DIRS =  BASE_DIR / "fixtures" 
 
