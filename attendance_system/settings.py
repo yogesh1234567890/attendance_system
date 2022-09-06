@@ -33,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%%n6n+#(pxj1no*#rd1use^ik-5u&z7!opiczc02de6x6d0^mu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 # if not IS_HEROKU:
 #     DEBUG = True
 
@@ -100,27 +100,27 @@ WSGI_APPLICATION = 'attendance_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         "HOST": "localhost",
-#         "PORT": "5433",
-#         "NAME": "attendance_system",
-#         "USER": "yogesh",
-#         "PASSWORD": "asdf;lkj",
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        "HOST": "ec2-3-219-19-205.compute-1.amazonaws.com",
-        "PORT": "5432",
-        "NAME": "d79mt0lqs081qn",
-        "USER": "yakrvkuagbuzym",
-        "PASSWORD": "0ce7cdaeee5046869c6d5b817f369493b6456c43b813eba868c9ca66482387bb",
+        "HOST": "localhost",
+        "PORT": "5433",
+        "NAME": "attendance_system",
+        "USER": "yogesh",
+        "PASSWORD": "asdf;lkj",
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         "HOST": "ec2-3-219-19-205.compute-1.amazonaws.com",
+#         "PORT": "5432",
+#         "NAME": "d79mt0lqs081qn",
+#         "USER": "yakrvkuagbuzym",
+#         "PASSWORD": "0ce7cdaeee5046869c6d5b817f369493b6456c43b813eba868c9ca66482387bb",
+#     }
+# }
 
 FIXTURE_DIRS =  BASE_DIR / "fixtures" 
 
@@ -158,14 +158,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Enable WhiteNoise's GZip compression of static assets.
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.CachedStaticFilesStorage"
 
 
 # Test Runner Config
