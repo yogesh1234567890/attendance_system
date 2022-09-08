@@ -4,15 +4,23 @@ from attendance.models import Attendance,Classes, Subject
 class subjectAttendanceSerializer(serializers.ModelSerializer):
     present = serializers.SerializerMethodField()
     absent = serializers.SerializerMethodField()
+    present_persons = serializers.SerializerMethodField()
+    absent_persons = serializers.SerializerMethodField()
     class Meta:
         model = Subject
-        fields = ['subject_name', 'present', 'absent']
+        fields = ['subject_name', 'present', 'absent', 'present_persons', 'absent_persons']
         
     def get_present(self, obj):
         return Attendance.objects.filter(subject=obj, attendance=True).count()  
     
     def get_absent(self, obj):
         return Attendance.objects.filter(subject=obj, attendance=False).count()
+    
+    def get_present_persons(self, obj):
+        return Attendance.objects.filter(subject=obj, attendance=True).values_list('student__name', flat=True)
+    
+    def get_absent_persons(self, obj):
+        return Attendance.objects.filter(subject=obj, attendance=False).values_list('student__name', flat=True)
 
 class classSerializer(serializers.ModelSerializer):
     attendance = serializers.SerializerMethodField()

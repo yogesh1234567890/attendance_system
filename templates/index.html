@@ -60,6 +60,21 @@
                   <p class="card-title">Attendance Report</p>
                  </div>
                   <p class="font-weight-500">The total number of attendance</p>
+                  <div class="card">
+                    <div class="template-demo">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-success">Classes</button>
+                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuSplitButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton3">
+                          {% for c in class %}
+                          <a class="dropdown-item" id="{{c.id}}" onclick="dataLoad({{c.id}})" >{{c.class_name}}</a>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                </div>
                   <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
                   <canvas id="sales-chart"></canvas>
                 </div>
@@ -77,87 +92,28 @@
 {% endblock %}
 {% block script %}
 <script>
-  const classes = [];
-  const present = [];
-  const absent = [];
-  $.ajax({
-  type: 'GET',
-  dataType:"json",
-  url: '/attendance/chart-data/',
-  success: function (data, status, xhr) {
-      for (let i = 0; i < data.length; i++) {
-        classes.push(data[i].class_name);
-        present.push(data[i].attendance[0].present);
-        absent.push(data[i].attendance[0].absent);
-      }
-   }
- });
 
-  var doughnutPieOptions = {
-    responsive: true,
-    animation: {
-      animateScale: true,
-      animateRotate: true
-    }
-  };
-  var doughnutPieData = {
-    datasets: [{
-      data: [{% for attendance in attendance_total_list %}
-      `{{attendance.attendance.attendees}}`,
-      {% endfor %}],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.5)',
-        'rgba(54, 162, 235, 0.5)',
-        'rgba(255, 206, 86, 0.5)',
-        'rgba(75, 192, 192, 0.5)',
-        'rgba(153, 102, 255, 0.5)',
-        'rgba(255, 159, 64, 0.5)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-    }],
-
-    labels: [
-    {% for attendance in attendance_total_list %}
-      `{{attendance.class.class_name}}`,
-    {% endfor %}
-    ]
-  };
-
-  if ($("#pieChart").length) {
-    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-    var pieChart = new Chart(pieChartCanvas, {
-      type: 'pie',
-      options: doughnutPieOptions,
-      data: doughnutPieData,
-
-    });
+  function dataLoad(id){
+    dataCall(id);
   }
-
+  function barData(data){
   if ($("#sales-chart").length) {
     var SalesChartCanvas = $("#sales-chart").get(0).getContext("2d");
     var SalesChart = new Chart(SalesChartCanvas, {
       type: 'bar',
       data: {
-        labels: classes,
+        labels: data.subjects,
         datasets: [
         {
-          label: 'Present',
-          data: present,
+          label: "present",
+          data: data.present,
           backgroundColor: '#29568d'
         },
         {
-            label: 'Absent',
-            data: absent,
+            label: "absent",
+            data: data.absent,
             backgroundColor: '#98BDFF'
-          }
-          
+          },          
         ]
       },
       options: {
@@ -217,6 +173,71 @@
     });
     document.getElementById('sales-legend').innerHTML = SalesChart.generateLegend();
   }
+};
+  function dataCall(id){
+    $.ajax({
+      type: 'GET',
+      dataType:"json",
+      url: '/attendance/chart-data/?class='+id,
+      success: function (data, status, xhr) {
+          barData(data);
+       }
+     });
+  };
+
+  $(document).ready(dataCall(`{{class.first.id}}`));
+
+
+  var doughnutPieOptions = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+  var doughnutPieData = {
+    datasets: [{
+      data: [{% for attendance in attendance_total_list %}
+      `{{attendance.attendance.attendees}}`,
+      {% endfor %}],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+    }],
+
+    labels: [
+    {% for attendance in attendance_total_list %}
+      `{{attendance.class.class_name}}`,
+    {% endfor %}
+    ]
+  };
+
+  if ($("#pieChart").length) {
+    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+    var pieChart = new Chart(pieChartCanvas, {
+      type: 'pie',
+      options: doughnutPieOptions,
+      data: doughnutPieData,
+
+    });
+  }
+
+
+
+
 
 
 

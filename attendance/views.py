@@ -36,6 +36,7 @@ def dashboard(request):
         'title': 'Dashboard', 
         'date': date.today(), 
         'classes': classes.count(),
+        'class': classes,
         'students': Students.objects.all().count(),
         }
     return render(request, 'index.html',context)
@@ -253,7 +254,4 @@ def attendance_create(request, pk):
 
 @login_required()
 def attendance_display_table(request, pk):
-    sub = Subject.objects.get(id=pk)
-    students = Students.objects.filter(study_class=sub.subject_class).order_by('roll_no')
-    attendance = Attendance.objects.filter(subject=sub).order_by('-created_at').distinct('created_at')
-    return render(request, "attendance_table.html", {"attendance": attendance, 'title': 'Attendance', 'students': students, 'sub': sub})
+    return render(request, "attendance_table.html", { 'title': 'Attendance', 'pk': pk})
